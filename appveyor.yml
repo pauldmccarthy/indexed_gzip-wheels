@@ -17,9 +17,9 @@ environment:
       REPO_DIR: indexed_gzip
       PACKAGE_NAME: indexed_gzip
       # Change this whenever you need to do a new build
-      BUILD_COMMIT: v0.8.10
+      BUILD_COMMIT: mnt/1.0.0_prep
       # Set to 0 for a test build, 1 to deploy builds
-      DEPLOY: 1
+      DEPLOY: 0
       BUILD_DEPENDS: "Cython numpy zlib"
       TEST_DEPENDS: "numpy pytest six"
 
@@ -54,6 +54,12 @@ environment:
         PYTHON_ARCH: "32"
       - PYTHON: "C:\\Miniconda37-x64"
         PYTHON_VERSION: "3.7"
+        PYTHON_ARCH: "64"
+      - PYTHON: "C:\\Miniconda37-x64"
+        PYTHON_VERSION: "3.8"
+        PYTHON_ARCH: "32"
+      - PYTHON: "C:\\Miniconda37-x64"
+        PYTHON_VERSION: "3.8"
         PYTHON_ARCH: "64"
 
 
