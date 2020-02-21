@@ -1,0 +1,114 @@
+# Build Windows wheels for indexed_gzip:
+#     https://github.com/pauldmccarthy/indexed_gzip
+#
+# This configuration is based on multibuild:
+#     https://github.com/matthew-brett/multibuild
+#
+# The following environment variables must be provided:
+#
+#   - WHEEL_URL           - URL of server to rsync wheels to (username@host)
+#   - SSH_SERVER_HOSTKEYS - List of trusted SSH hosts (should just contain the
+#                           upload url)
+
+os: Visual Studio 2015
+
+environment:
+    global:
+      REPO_DIR: indexed_gzip
+      PACKAGE_NAME: indexed_gzip
+      # Change this whenever you need to do a new build
+      BUILD_COMMIT: v0.8.10
+      # Set to 0 for a test build, 1 to deploy builds
+      DEPLOY: 1
+      BUILD_DEPENDS: "Cython numpy zlib"
+      TEST_DEPENDS: "numpy pytest six"
+
+      # Mak cygwin/bash run in the current directory
+      CHERE_INVOKING: 1
+
+      SSH_PRIVATE_KEY_UPLOAD:
+        secure: d80fC6NLQaWNBt8W/fzxXm54mefmPZyu6YfJjKm/LJEg5NpaCYYx4ZUyKjcAjA2C
+
+    matrix:
+
+      - PYTHON: "C:\\Miniconda"
+        PYTHON_VERSION: "2.7"
+        PYTHON_ARCH: "32"
+      - PYTHON: "C:\\Miniconda-x64"
+        PYTHON_VERSION: "2.7"
+        PYTHON_ARCH: "64"
+      - PYTHON: "C:\\Miniconda35"
+        PYTHON_VERSION: "3.5"
+        PYTHON_ARCH: "32"
+      - PYTHON: "C:\\Miniconda35-x64"
+        PYTHON_VERSION: "3.5"
+        PYTHON_ARCH: "64"
+      - PYTHON: "C:\\Miniconda36"
+        PYTHON_VERSION: "3.6"
+        PYTHON_ARCH: "32"
+      - PYTHON: "C:\\Miniconda36-x64"
+        PYTHON_VERSION: "3.6"
+        PYTHON_ARCH: "64"
+      - PYTHON: "C:\\Miniconda37"
+        PYTHON_VERSION: "3.7"
+        PYTHON_ARCH: "32"
+      - PYTHON: "C:\\Miniconda37-x64"
+        PYTHON_VERSION: "3.7"
+        PYTHON_ARCH: "64"
+
+
+install:
+
+  # Get needed submodules
+  - git submodule update --init --recursive
+
+  # Install miniconda and fix headers
+  - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PYTHON%\Library\bin;%PATH%
+  - conda info
+
+  # Check that we have the expected version and architecture for Python
+  - python --version
+  - python -c "import struct; print(struct.calcsize('P') * 8)"
+
+  # Install ssh and rsync for artifact upload
+  - C:\\cygwin\\setup-x86.exe -qnNdO -R C:\\cygwin -s http://cygwin.mirror.constant.com -l C:/var/cache/setup -P rsync -P ssh -P bash
+
+  # Set up private SSH upload keys
+  - nuget install secure-file -ExcludeVersion
+  - secure-file\tools\secure-file -decrypt id_whl_upload.appveyor.enc   -secret %SSH_PRIVATE_KEY_UPLOAD% -out id_whl_upload.appveyor
+
+  - C:\\cygwin\\bin\\bash -e -l -c "chmod a+x ./setup_rsync.sh; ./setup_rsync.sh ./id_whl_upload.appveyor"
+
+
+build_script:
+
+  # install build dependencies
+  - conda install --yes conda-build %BUILD_DEPENDS%
+  - set ZLIB_HOME=%PYTHON%\\Library
+
+  # Build and install the wheel
+  - cd %REPO_DIR%
+  - git checkout %BUILD_COMMIT%
+  - python setup.py bdist_wheel
+
+
+test_script:
+  - conda create --yes -n test_env python=%PYTHON_VERSION% %TEST_DEPENDS%
+  - activate test_env
+
+  # workaround cpython bug: https://github.com/matplotlib/matplotlib/issues/9176
+  - python -c "import sys; sys.exit(not (3,) < sys.version_info < (3,6,3))" && (curl -sL https://github.com/python/cpython/pull/1224.patch | patch -fsup 1 -d %CONDA_PREFIX% ) || ( set errorlevel=0 )
+
+  - pip install --no-index --find-links dist %PACKAGE_NAME%
+  - pip install %TEST_DEPENDS%
+  - cd ..
+  - md testing
+  - cd testing
+  - cp ..\\%REPO_DIR%\\conftest.py .
+  - pytest -v -s -m indexed_gzip_test          --niters 250 --pyargs indexed_gzip
+  - pytest -v -s -m indexed_gzip_test --concat --niters 250 --pyargs indexed_gzip
+  - cd ..\\%REPO_DIR%
+
+
+on_success:
+  - C:\\cygwin\\bin\\bash -e -l -c 'if [ "$DEPLOY" == "1" ]; then rsync  -v  dist/*.whl uploadhost:; fi'

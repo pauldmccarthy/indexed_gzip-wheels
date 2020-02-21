@@ -1,0 +1,123 @@
+# Build python wheels for indexed_gzip:
+#     https://github.com/pauldmccarthy/indexed_gzip
+#
+# This configuration is based on multibuild:
+#     https://github.com/matthew-brett/multibuild
+#
+# The following environment variables must be provided:
+#
+#   - WHEEL_URL           - URL of server to rsync wheels to (username@host)
+#   - SSH_SERVER_HOSTKEYS - List of trusted SSH hosts (should just contain the
+#                           upload url)
+
+env:
+    global:
+        - REPO_DIR=indexed_gzip
+        # Change this whenever you need to do a new build
+        - BUILD_COMMIT=v0.8.10
+        # Set to 0 for a test build, 1 to deploy builds
+        - DEPLOY=1
+        - BUILD_DEPENDS="Cython numpy"
+        - TEST_DEPENDS="numpy pytest coverage pytest-cov six"
+        - PLAT=x86_64
+        - UNICODE_WIDTH=32
+
+        # Password used to decrypt the private
+        # SSH upload keys (SSH_PRIVATE_KEY_UPLOAD)
+        - secure: "lGqye0L95EQrH3DPG5pyrreqTrL1u7YYVzmkjciKTnkpy4i3i7/ZJEca4ib3ppSMWALaGvtfLRG9I/xARN57ECL2avfPO8raMdGsHzXLpVaqZUlfcO4IcbAqhJy624QFB4DOr3gz6lj/3JwJ1utGWZ8XqXLOXtiV65gNaN+oipbqoMjBMxbcdPJ4rW4Y2jWMLmH5ErZJObGuqmTveHAlnZlvPQp3q5uxOIDvgDfBGFoSWosO+FnpwcnQWZiqY5dJnVUCI2pRy7Tw4fml0R+RE8yv4tr/WAbwgO6qJOkzcR0OTiZ86WRdT/EbeM+V0zTlKT4w9ZPZvJJ7MeeIKm+HqA9rLVlopL1VVfQsXJiad7QSfm/RDN6OnmSDB0xli1NW/gQrdGLwD/L7z2abAjUbMFp3c4ebxs2pPou2h0s2XaLI5QspYm0Fcok8W2Qywgj9NGMUaInkamAVt9ZyQoPfnLIswAJtBGCATPSMJy/ziaKdQU/CaBbSlPR0vy54IoQMtLtOqJaq+lyFO5rqWML+1wjWscPR+VgaOt5Tb6w5r6pj5r9xC1JHdVwyO7IS17o0zrRbs7llWck/f2IGc8RfVfqyPIPBB/WjCrN1MXtsGfCLISnDFW0AwfknyejzFmOClokKBmhFf2HTdGORQhIse66BAhL37nZc7N+khq9gkjI="
+
+language: python
+# The travis Python version is unrelated to the version we build and test
+# with.  This is set with the MB_PYTHON_VERSION variable.
+python: 3.5
+sudo: required
+dist: trusty
+services: docker
+
+matrix:
+  exclude:
+    # Exclude the default Python 3.5 build
+    - python: 3.5
+  include:
+    - os: linux
+      env: MB_PYTHON_VERSION=2.7
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=2.7
+        - UNICODE_WIDTH=16
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=2.7
+        - PLAT=i686
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=2.7
+        - PLAT=i686
+        - UNICODE_WIDTH=16
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.5
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.5
+        - PLAT=i686
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.6
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.6
+        - PLAT=i686
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.7
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.7
+        - PLAT=i686
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=2.7
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.5
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.6
+    - os: linux
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.6
+        - BUILD_SOURCE=1
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.7
+
+before_install:
+
+    # Configure SSH for rsyncing builds
+    - eval "$(ssh-agent -s)"
+    - mkdir -p $HOME/.ssh
+    - openssl aes-256-cbc -pass "pass:$SSH_PRIVATE_KEY_UPLOAD" -in ./id_whl_upload.travis.enc    -out ./id_whl_upload.travis    -d -a
+    - bash ./setup_rsync.sh ./id_whl_upload.travis
+
+    # Prepare for building
+    - source multibuild/common_utils.sh
+    - source multibuild/travis_steps.sh
+    - source do_build.sh
+    - before_install
+
+install:
+    # Maybe get and clean and patch source
+    - clean_code $REPO_DIR $BUILD_COMMIT
+    - do_build
+
+script:
+    - if [ "x$BUILD_SOURCE" == "x" ]; then install_run $PLAT; fi
+
+after_success:
+    - if [[ "$DEPLOY" == "1" ]]; then rsync  -v "$TRAVIS_BUILD_DIR"/wheelhouse/* "uploadhost:"; fi
