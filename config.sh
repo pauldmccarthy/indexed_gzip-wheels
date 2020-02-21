@@ -19,7 +19,9 @@ function run_tests {
 }
 
 
-function do_build() {
+function build_wheel() {
+  REPO_DIR=$1
+  PLAT=$2
   pip install --upgrade pip setuptools
   if [[ "$BUILD_SOURCE" == "1" ]]; then
     pushd $REPO_DIR > /dev/null;
@@ -28,6 +30,6 @@ function do_build() {
     cp dist/*tar.gz "$TRAVIS_BUILD_DIR"/wheelhouse/;
     popd > /dev/null;
   else
-    build_wheel $REPO_DIR $PLAT;
+    build_pip_wheel $REPO_DIR $PLAT;
   fi
-}
+21}

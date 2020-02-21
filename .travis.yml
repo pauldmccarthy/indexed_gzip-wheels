@@ -120,13 +120,12 @@ before_install:
     # Prepare for building
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
-    - source do_build.sh
     - before_install
 
 install:
     # Maybe get and clean and patch source
     - clean_code $REPO_DIR $BUILD_COMMIT
-    - do_build
+    - build_wheel $REPO_DIR $PLAT
 
 script:
     - if [ "x$BUILD_SOURCE" == "x" ]; then install_run $PLAT; fi
