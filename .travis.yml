@@ -14,9 +14,9 @@ env:
     global:
         - REPO_DIR=indexed_gzip
         # Change this whenever you need to do a new build
-        - BUILD_COMMIT=mnt/1.0.0_prep
+        - BUILD_COMMIT=v1.0.0
         # Set to 0 for a test build, 1 to deploy builds
-        - DEPLOY=0
+        - DEPLOY=1
         - BUILD_DEPENDS="Cython numpy"
         - TEST_DEPENDS="numpy pytest coverage pytest-cov six"
         - PLAT=x86_64
