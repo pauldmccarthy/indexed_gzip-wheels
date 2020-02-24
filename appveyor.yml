@@ -89,9 +89,8 @@ install:
 build_script:
 
   # install build dependencies
-  - conda install --yes %BUILD_DEPENDS%
   - conda create --yes -n build_env python=%PYTHON_VERSION% conda-build %BUILD_DEPENDS%
-  - activate build_env
+  - conda activate build_env
   - conda update  --yes setuptools pip
   - conda install --yes readme_renderer cmarkgfm twine
   - set ZLIB_HOME=%PYTHON%\\Library
@@ -105,7 +104,7 @@ build_script:
 
 test_script:
   - conda create --yes -n test_env python=%PYTHON_VERSION% %TEST_DEPENDS%
-  - activate test_env
+  - conda activate test_env
 
   # workaround cpython bug: https://github.com/matplotlib/matplotlib/issues/9176
   - python -c "import sys; sys.exit(not (3,) < sys.version_info < (3,6,3))" && (curl -sL https://github.com/python/cpython/pull/1224.patch | patch -fsup 1 -d %CONDA_PREFIX% ) || ( set errorlevel=0 )
