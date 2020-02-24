@@ -92,6 +92,7 @@ build_script:
   - conda install --yes setuptools wheel twine
   - conda update  --yes setuptools wheel twine
   - conda install --yes conda-build %BUILD_DEPENDS%
+  - pip install readme_render[md]
   - set ZLIB_HOME=%PYTHON%\\Library
 
   # Build and install the wheel
@@ -109,7 +110,6 @@ test_script:
   - python -c "import sys; sys.exit(not (3,) < sys.version_info < (3,6,3))" && (curl -sL https://github.com/python/cpython/pull/1224.patch | patch -fsup 1 -d %CONDA_PREFIX% ) || ( set errorlevel=0 )
 
   - pip install --upgrade pip setuptools
-  - pip install readme_render[md]
   - pip install --no-index --find-links dist %PACKAGE_NAME%
   - pip install %TEST_DEPENDS%
   - cd ..

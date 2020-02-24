@@ -120,6 +120,7 @@ before_install:
     # Prepare for building
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
+    - source config.sh
     - before_install
 
 install:
