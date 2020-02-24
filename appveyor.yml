@@ -89,6 +89,7 @@ install:
 build_script:
 
   # install build dependencies
+  - conda install --yes setuptools wheel twine
   - conda update  --yes setuptools wheel twine
   - conda install --yes conda-build %BUILD_DEPENDS%
   - set ZLIB_HOME=%PYTHON%\\Library
