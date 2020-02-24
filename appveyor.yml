@@ -91,7 +91,7 @@ build_script:
   # install build dependencies
   - conda install --yes conda-build %BUILD_DEPENDS%
   - conda update  --yes setuptools pip
-  - pip install "readme_renderer[md]" twine
+  - conda install --yes readme_renderer cmarkgfm twine
   - set ZLIB_HOME=%PYTHON%\\Library
 
   # Build and install the wheel
