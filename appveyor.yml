@@ -90,8 +90,8 @@ build_script:
 
   # install build dependencies
   - conda install --yes conda-build %BUILD_DEPENDS%
-  - pip install --upgrade setuptools wheel twine
-  - pip install "readme_renderer[md]"
+  - conda update  --yes setuptools pip
+  - pip install "readme_renderer[md]" twine
   - set ZLIB_HOME=%PYTHON%\\Library
 
   # Build and install the wheel
