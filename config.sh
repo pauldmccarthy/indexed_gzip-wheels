@@ -19,7 +19,7 @@ function run_tests {
 }
 
 
-function build_source() {
+function build_source {
   REPO_DIR=$1
   pip install --upgrade pip setuptools
   pushd $REPO_DIR > /dev/null;
