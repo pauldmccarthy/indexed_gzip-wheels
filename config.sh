@@ -19,17 +19,12 @@ function run_tests {
 }
 
 
-function build_wheel() {
+function build_source() {
   REPO_DIR=$1
-  PLAT=$2
   pip install --upgrade pip setuptools
-  if [[ "$BUILD_SOURCE" == "1" ]]; then
-    pushd $REPO_DIR > /dev/null;
-    pip install cython numpy;
-    python setup.py sdist;
-    cp dist/*tar.gz "$TRAVIS_BUILD_DIR"/wheelhouse/;
-    popd > /dev/null;
-  else
-    build_pip_wheel $REPO_DIR $PLAT;
-  fi
+  pushd $REPO_DIR > /dev/null;
+  pip install cython numpy;
+  python setup.py sdist;
+  cp dist/*tar.gz "$TRAVIS_BUILD_DIR"/wheelhouse/;
+  popd > /dev/null;
 }
