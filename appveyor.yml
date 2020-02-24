@@ -90,7 +90,7 @@ build_script:
 
   # install build dependencies
   - conda create --yes -n build_env python=%PYTHON_VERSION% conda-build %BUILD_DEPENDS%
-  - conda activate build_env
+  - CALL conda.bat activate build_env
   - conda update  --yes setuptools pip
   - conda install --yes readme_renderer cmarkgfm twine
   - set ZLIB_HOME=%PYTHON%\\Library
