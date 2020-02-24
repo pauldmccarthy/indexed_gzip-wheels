@@ -109,6 +109,7 @@ test_script:
   - python -c "import sys; sys.exit(not (3,) < sys.version_info < (3,6,3))" && (curl -sL https://github.com/python/cpython/pull/1224.patch | patch -fsup 1 -d %CONDA_PREFIX% ) || ( set errorlevel=0 )
 
   - pip install --upgrade pip setuptools
+  - pip install readme_render[md]
   - pip install --no-index --find-links dist %PACKAGE_NAME%
   - pip install %TEST_DEPENDS%
   - cd ..
