@@ -4,11 +4,10 @@
 # This configuration is based on multibuild:
 #     https://github.com/matthew-brett/multibuild
 #
-# The following environment variables must be provided:
+# The following environment variables must be defined
 #
-#   - WHEEL_URL           - URL of server to rsync wheels to (username@host)
-#   - SSH_SERVER_HOSTKEYS - List of trusted SSH hosts (should just contain the
-#                           upload url)
+#   - TWINE_USERNAME: - Username to use when uploading to pypi
+#   - TWINE_PASSWORD: - Password to use when uploading to pypi
 
 env:
     global:
@@ -21,10 +20,6 @@ env:
         - TEST_DEPENDS="numpy pytest coverage pytest-cov six"
         - PLAT=x86_64
         - UNICODE_WIDTH=32
-
-        # Password used to decrypt the private
-        # SSH upload keys (SSH_PRIVATE_KEY_UPLOAD)
-        - secure: "lGqye0L95EQrH3DPG5pyrreqTrL1u7YYVzmkjciKTnkpy4i3i7/ZJEca4ib3ppSMWALaGvtfLRG9I/xARN57ECL2avfPO8raMdGsHzXLpVaqZUlfcO4IcbAqhJy624QFB4DOr3gz6lj/3JwJ1utGWZ8XqXLOXtiV65gNaN+oipbqoMjBMxbcdPJ4rW4Y2jWMLmH5ErZJObGuqmTveHAlnZlvPQp3q5uxOIDvgDfBGFoSWosO+FnpwcnQWZiqY5dJnVUCI2pRy7Tw4fml0R+RE8yv4tr/WAbwgO6qJOkzcR0OTiZ86WRdT/EbeM+V0zTlKT4w9ZPZvJJ7MeeIKm+HqA9rLVlopL1VVfQsXJiad7QSfm/RDN6OnmSDB0xli1NW/gQrdGLwD/L7z2abAjUbMFp3c4ebxs2pPou2h0s2XaLI5QspYm0Fcok8W2Qywgj9NGMUaInkamAVt9ZyQoPfnLIswAJtBGCATPSMJy/ziaKdQU/CaBbSlPR0vy54IoQMtLtOqJaq+lyFO5rqWML+1wjWscPR+VgaOt5Tb6w5r6pj5r9xC1JHdVwyO7IS17o0zrRbs7llWck/f2IGc8RfVfqyPIPBB/WjCrN1MXtsGfCLISnDFW0AwfknyejzFmOClokKBmhFf2HTdGORQhIse66BAhL37nZc7N+khq9gkjI="
 
 language: python
 os: linux
@@ -107,13 +102,6 @@ jobs:
 
 
 before_install:
-
-    # Configure SSH for rsyncing builds
-    - eval "$(ssh-agent -s)"
-    - mkdir -p $HOME/.ssh
-    - openssl aes-256-cbc -pass "pass:$SSH_PRIVATE_KEY_UPLOAD" -in ./id_whl_upload.travis.enc    -out ./id_whl_upload.travis    -d -a
-    - bash ./setup_rsync.sh ./id_whl_upload.travis
-
     # Prepare for building
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
@@ -130,4 +118,4 @@ script:
     - if [ "x$BUILD_SOURCE" == "x" ]; then install_run $PLAT; fi
 
 after_success:
-    - if [[ "$DEPLOY" == "1" ]]; then rsync  -v "$TRAVIS_BUILD_DIR"/wheelhouse/* "uploadhost:"; fi
+    - if [[ "$DEPLOY" == "1" ]]; then sh ./deploy.sh; fi

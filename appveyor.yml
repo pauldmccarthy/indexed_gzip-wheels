@@ -4,11 +4,11 @@
 # This configuration is based on multibuild:
 #     https://github.com/matthew-brett/multibuild
 #
-# The following environment variables must be provided:
+# The following environment variables must be defined
 #
-#   - WHEEL_URL           - URL of server to rsync wheels to (username@host)
-#   - SSH_SERVER_HOSTKEYS - List of trusted SSH hosts (should just contain the
-#                           upload url)
+#   - TWINE_USERNAME: - Username to use when uploading to pypi
+#   - TWINE_PASSWORD: - Password to use when uploading to pypi
+
 
 os: Visual Studio 2015
 
@@ -25,9 +25,6 @@ environment:
 
       # Mak cygwin/bash run in the current directory
       CHERE_INVOKING: 1
-
-      SSH_PRIVATE_KEY_UPLOAD:
-        secure: d80fC6NLQaWNBt8W/fzxXm54mefmPZyu6YfJjKm/LJEg5NpaCYYx4ZUyKjcAjA2C
 
     matrix:
 
@@ -76,12 +73,8 @@ install:
   - python --version
   - python -c "import struct; print(struct.calcsize('P') * 8)"
 
-  # Install ssh and rsync for artifact upload
-  - C:\\cygwin\\setup-x86.exe -qnNdO -R C:\\cygwin -s http://cygwin.mirror.constant.com -l C:/var/cache/setup -P rsync -P ssh -P bash
-
-  # Set up private SSH upload keys
-  - nuget install secure-file -ExcludeVersion
-  - secure-file\tools\secure-file -decrypt id_whl_upload.appveyor.enc   -secret %SSH_PRIVATE_KEY_UPLOAD% -out id_whl_upload.appveyor
+  # Install ssh  for artifact upload
+  - C:\\cygwin\\setup-x86.exe -qnNdO -R C:\\cygwin -s http://cygwin.mirror.constant.com -l C:/var/cache/setup -P ssh -P bash
 
   - C:\\cygwin\\bin\\bash -e -l -c "chmod a+x ./setup_rsync.sh; ./setup_rsync.sh ./id_whl_upload.appveyor"
 
@@ -123,4 +116,4 @@ test_script:
 
 
 on_success:
-  - C:\\cygwin\\bin\\bash -e -l -c 'if [ "$DEPLOY" == "1" ]; then rsync  -v  dist/*.whl uploadhost:; fi'
+  - C:\\cygwin\\bin\\bash -e -l -c 'if [ "$DEPLOY" == "1" ]; then sh ./deploy.sh; fi'
