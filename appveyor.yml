@@ -112,7 +112,7 @@ test_script:
   - cp ..\\%REPO_DIR%\\conftest.py .
   - pytest -v -s -m indexed_gzip_test          --niters 250 --pyargs indexed_gzip
   - pytest -v -s -m indexed_gzip_test --concat --niters 250 --pyargs indexed_gzip
-  - cd ..\\%REPO_DIR%
+  - cd ..\\
 
 
 on_success:
