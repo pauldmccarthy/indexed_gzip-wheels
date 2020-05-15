@@ -112,8 +112,8 @@ test_script:
   - cp ..\\%REPO_DIR%\\conftest.py .
   - pytest -v -s -m indexed_gzip_test          --niters 250 --pyargs indexed_gzip
   - pytest -v -s -m indexed_gzip_test --concat --niters 250 --pyargs indexed_gzip
-  - cd ..\\
+  - cd ..\\%REPO_DIR%\\
 
 
 on_success:
-  - C:\\cygwin\\bin\\bash -e -l -c 'if [ "$DEPLOY" == "1" ]; then sh ./deploy.sh ./dist/*; fi'
+  - C:\\cygwin\\bin\\bash -e -l -c 'if [ "$DEPLOY" == "1" ]; then pwd; ls; sh ../deploy.sh ./dist/*; fi'
