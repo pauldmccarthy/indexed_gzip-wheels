@@ -118,4 +118,4 @@ script:
     - if [ "x$BUILD_SOURCE" == "x" ]; then install_run $PLAT; fi
 
 after_success:
-    - if [[ "$DEPLOY" == "1" ]]; then sh ./deploy.sh; fi
+    - if [[ "$DEPLOY" == "1" ]]; then sh ./deploy.sh "$TRAVIS_BUILD_DIR"/wheelhouse/*; fi

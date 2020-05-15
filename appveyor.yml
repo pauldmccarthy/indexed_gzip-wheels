@@ -116,4 +116,4 @@ test_script:
 
 
 on_success:
-  - C:\\cygwin\\bin\\bash -e -l -c 'if [ "$DEPLOY" == "1" ]; then sh ./deploy.sh; fi'
+  - C:\\cygwin\\bin\\bash -e -l -c 'if [ "$DEPLOY" == "1" ]; then sh ./deploy.sh ./dist/*; fi'
