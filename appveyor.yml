@@ -17,7 +17,7 @@ environment:
       REPO_DIR: indexed_gzip
       PACKAGE_NAME: indexed_gzip
       # Change this whenever you need to do a new build
-      BUILD_COMMIT: v1.3.0
+      BUILD_COMMIT: v1.3.1
       # Set to 0 for a test build, 1 to deploy builds
       DEPLOY: 1
       BUILD_DEPENDS: "Cython numpy zlib"
