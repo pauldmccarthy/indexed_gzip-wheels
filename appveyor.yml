@@ -52,10 +52,10 @@ environment:
       - PYTHON: "C:\\Miniconda37-x64"
         PYTHON_VERSION: "3.7"
         PYTHON_ARCH: "64"
-      - PYTHON: "C:\\Miniconda37-x64"
+      - PYTHON: "C:\\Miniconda38"
         PYTHON_VERSION: "3.8"
         PYTHON_ARCH: "32"
-      - PYTHON: "C:\\Miniconda37-x64"
+      - PYTHON: "C:\\Miniconda38-x64"
         PYTHON_VERSION: "3.8"
         PYTHON_ARCH: "64"
 
@@ -82,6 +82,7 @@ install:
 build_script:
 
   # install build dependencies
+  - conda update --yes conda
   - conda install --yes %BUILD_DEPENDS% conda-build
   - conda create --yes -n build_env python=%PYTHON_VERSION%  %BUILD_DEPENDS%
   - CALL conda.bat activate build_env
@@ -92,6 +93,10 @@ build_script:
   # Build and install the wheel
   - cd %REPO_DIR%
   - git checkout %BUILD_COMMIT%
+
+  # work around some conda issue that I don't understand
+  # https://github.com/conda/conda/issues/6057
+  - conda install --yes tqdm
   - python setup.py bdist_wheel
   - twine check dist/*
 
