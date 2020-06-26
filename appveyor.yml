@@ -52,12 +52,12 @@ environment:
       # - PYTHON: "C:\\Miniconda37-x64"
       #   PYTHON_VERSION: "3.7"
       #   PYTHON_ARCH: "64"
-      - PYTHON: "C:\\Miniconda38"
+      - PYTHON: "C:\\Miniconda37"
         PYTHON_VERSION: "3.8"
         PYTHON_ARCH: "32"
-      - PYTHON: "C:\\Miniconda38-x64"
-        PYTHON_VERSION: "3.8"
-        PYTHON_ARCH: "64"
+      # - PYTHON: "C:\\Miniconda38-x64"
+      #   PYTHON_VERSION: "3.8"
+      #   PYTHON_ARCH: "64"
 
 
 install:
@@ -65,7 +65,7 @@ install:
   # Get needed submodules
   - git submodule update --init --recursive
 
-  # Install miniconda and fix headers
+  # Put miniconda on the path
   - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PYTHON%\Library\bin;%PATH%
 
   # Check that we have the expected version and architecture for Python
@@ -76,7 +76,7 @@ install:
 build_script:
 
   # install build dependencies
-  - conda update --yes conda
+  - conda config --set auto_update_conda false
   - conda clean --all --yes
   - conda install --yes tqdm
   - conda install --yes %BUILD_DEPENDS% conda-build
