@@ -10,7 +10,7 @@
 #   - TWINE_PASSWORD: - Password to use when uploading to pypi
 
 
-os: Visual Studio 2015
+os: Visual Studio 2019
 
 environment:
     global:
@@ -72,16 +72,12 @@ install:
   - python --version
   - python -c "import struct; print(struct.calcsize('P') * 8)"
 
-  # Install ssh  for artifact upload
-  - C:\\cygwin\\setup-x86.exe -qnNdO -R C:\\cygwin -s http://cygwin.mirror.constant.com -l C:/var/cache/setup -P ssh -P bash
-
-  - C:\\cygwin\\bin\\bash -e -l -c "chmod a+x ./setup_rsync.sh; ./setup_rsync.sh ./id_whl_upload.appveyor"
-
 
 build_script:
 
   # install build dependencies
   - conda update --yes conda
+  - conda clean --all --yes
   - conda install --yes tqdm
   - conda install --yes %BUILD_DEPENDS% conda-build
   - conda create --yes -n build_env python=%PYTHON_VERSION%  %BUILD_DEPENDS%
