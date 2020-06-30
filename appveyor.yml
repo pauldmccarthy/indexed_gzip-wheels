@@ -17,7 +17,7 @@ environment:
       REPO_DIR: indexed_gzip
       PACKAGE_NAME: indexed_gzip
       # Change this whenever you need to do a new build
-      BUILD_COMMIT: v1.3.1
+      BUILD_COMMIT: v1.3.2
       # Set to 0 for a test build, 1 to deploy builds
       DEPLOY: 1
       BUILD_DEPENDS: "Cython numpy zlib"
@@ -30,12 +30,12 @@ environment:
 
     matrix:
 
-      # - PYTHON: "C:\\Miniconda"
-      #   PYTHON_VERSION: "2.7"
-      #   PYTHON_ARCH: "32"
-      # - PYTHON: "C:\\Miniconda-x64"
-      #   PYTHON_VERSION: "2.7"
-      #   PYTHON_ARCH: "64"
+      - PYTHON: "C:\\Miniconda"
+        PYTHON_VERSION: "2.7"
+        PYTHON_ARCH: "32"
+      - PYTHON: "C:\\Miniconda-x64"
+        PYTHON_VERSION: "2.7"
+        PYTHON_ARCH: "64"
       - PYTHON: "C:\\Miniconda35"
         PYTHON_VERSION: "3.5"
         PYTHON_ARCH: "32"
@@ -44,24 +44,24 @@ environment:
         PYTHON_VERSION: "3.5"
         PYTHON_ARCH: "64"
         CONDABAT: ""
-      # - PYTHON: "C:\\Miniconda36"
-      #   PYTHON_VERSION: "3.6"
-      #   PYTHON_ARCH: "32"
-      # - PYTHON: "C:\\Miniconda36-x64"
-      #   PYTHON_VERSION: "3.6"
-      #   PYTHON_ARCH: "64"
-      # - PYTHON: "C:\\Miniconda37"
-      #   PYTHON_VERSION: "3.7"
-      #   PYTHON_ARCH: "32"
-      # - PYTHON: "C:\\Miniconda37-x64"
-      #   PYTHON_VERSION: "3.7"
-      #   PYTHON_ARCH: "64"
-      # - PYTHON: "C:\\Miniconda37"
-      #   PYTHON_VERSION: "3.8"
-      #   PYTHON_ARCH: "32"
-      # - PYTHON: "C:\\Miniconda38-x64"
-      #   PYTHON_VERSION: "3.8"
-      #   PYTHON_ARCH: "64"
+      - PYTHON: "C:\\Miniconda36"
+        PYTHON_VERSION: "3.6"
+        PYTHON_ARCH: "32"
+      - PYTHON: "C:\\Miniconda36-x64"
+        PYTHON_VERSION: "3.6"
+        PYTHON_ARCH: "64"
+      - PYTHON: "C:\\Miniconda37"
+        PYTHON_VERSION: "3.7"
+        PYTHON_ARCH: "32"
+      - PYTHON: "C:\\Miniconda37-x64"
+        PYTHON_VERSION: "3.7"
+        PYTHON_ARCH: "64"
+      - PYTHON: "C:\\Miniconda37"
+        PYTHON_VERSION: "3.8"
+        PYTHON_ARCH: "32"
+      - PYTHON: "C:\\Miniconda38-x64"
+        PYTHON_VERSION: "3.8"
+        PYTHON_ARCH: "64"
 
 
 install:
@@ -114,8 +114,8 @@ test_script:
   - md testing
   - cd testing
   - cp ..\\%REPO_DIR%\\conftest.py .
-  - pytest -v -s -m indexed_gzip_test          --niters 250 --pyargs indexed_gzip
-  - pytest -v -s -m indexed_gzip_test --concat --niters 250 --pyargs indexed_gzip
+  - pytest -v -s -m indexed_gzip_test          --niters 250 --nelems=rnd_1048576 --pyargs indexed_gzip
+  - pytest -v -s -m indexed_gzip_test --concat --niters 250 --nelems=rnd_1048576 --pyargs indexed_gzip
   - cd ..\\%REPO_DIR%\\
 
 
