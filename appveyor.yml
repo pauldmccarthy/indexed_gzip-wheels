@@ -19,7 +19,7 @@ environment:
       # Set to 0 for a test build, 1 to deploy builds
       DEPLOY: 1
       BUILD_DEPENDS: "Cython numpy zlib"
-      TEST_DEPENDS: "numpy nibabel pytest six"
+      TEST_DEPENDS: "numpy pytest six"
 
       # Mak cygwin/bash run in the current directory
       CHERE_INVOKING: 1
@@ -117,7 +117,7 @@ test_script:
   - python -c "import sys; sys.exit(not (3,) < sys.version_info < (3,6,3))" && (curl -sL https://github.com/python/cpython/pull/1224.patch | patch -fsup 1 -d %CONDA_PREFIX% ) || ( set errorlevel=0 )
 
   - pip install --no-index --find-links dist %PACKAGE_NAME%
-  - pip install %TEST_DEPENDS%
+  - pip install nibabel
   - cd ..
   - md testing
   - cd testing
