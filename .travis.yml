@@ -17,7 +17,7 @@ env:
         # Set to 0 for a test build, 1 to deploy builds
         - DEPLOY=1
         - BUILD_DEPENDS="Cython numpy"
-        - TEST_DEPENDS="numpy pytest coverage pytest-cov six"
+        - TEST_DEPENDS="numpy nibabel pytest coverage pytest-cov six"
         - PLAT=x86_64
         - UNICODE_WIDTH=32
 
