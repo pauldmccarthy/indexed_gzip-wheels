@@ -10,8 +10,6 @@
 #   - TWINE_PASSWORD: - Password to use when uploading to pypi
 
 
-os: Visual Studio 2019
-
 environment:
     global:
       REPO_DIR: indexed_gzip
@@ -21,7 +19,7 @@ environment:
       # Set to 0 for a test build, 1 to deploy builds
       DEPLOY: 1
       BUILD_DEPENDS: "Cython numpy zlib"
-      TEST_DEPENDS: "numpy pytest six"
+      TEST_DEPENDS: "numpy nibabel pytest six"
 
       # Mak cygwin/bash run in the current directory
       CHERE_INVOKING: 1
@@ -30,36 +28,46 @@ environment:
 
     matrix:
 
-      - PYTHON: "C:\\Miniconda"
+      - image: Visual Studio 2015
+        PYTHON: "C:\\Miniconda"
         PYTHON_VERSION: "2.7"
         PYTHON_ARCH: "32"
-      - PYTHON: "C:\\Miniconda-x64"
+      - image: Visual Studio 2015
+        PYTHON: "C:\\Miniconda-x64"
         PYTHON_VERSION: "2.7"
         PYTHON_ARCH: "64"
-      - PYTHON: "C:\\Miniconda35"
+      - image: Visual Studio 2019
+        PYTHON: "C:\\Miniconda35"
         PYTHON_VERSION: "3.5"
         PYTHON_ARCH: "32"
         CONDABAT: ""
-      - PYTHON: "C:\\Miniconda35-x64"
+      - image: Visual Studio 2019
+        PYTHON: "C:\\Miniconda35-x64"
         PYTHON_VERSION: "3.5"
         PYTHON_ARCH: "64"
         CONDABAT: ""
-      - PYTHON: "C:\\Miniconda36"
+      - image: Visual Studio 2019
+        PYTHON: "C:\\Miniconda36"
         PYTHON_VERSION: "3.6"
         PYTHON_ARCH: "32"
-      - PYTHON: "C:\\Miniconda36-x64"
+      - image: Visual Studio 2019
+        PYTHON: "C:\\Miniconda36-x64"
         PYTHON_VERSION: "3.6"
         PYTHON_ARCH: "64"
-      - PYTHON: "C:\\Miniconda37"
+      - image: Visual Studio 2019
+        PYTHON: "C:\\Miniconda37"
         PYTHON_VERSION: "3.7"
         PYTHON_ARCH: "32"
-      - PYTHON: "C:\\Miniconda37-x64"
+      - image: Visual Studio 2019
+        PYTHON: "C:\\Miniconda37-x64"
         PYTHON_VERSION: "3.7"
         PYTHON_ARCH: "64"
-      - PYTHON: "C:\\Miniconda37"
+      - image: Visual Studio 2019
+        PYTHON: "C:\\Miniconda37"
         PYTHON_VERSION: "3.8"
         PYTHON_ARCH: "32"
-      - PYTHON: "C:\\Miniconda38-x64"
+      - image: Visual Studio 2019
+        PYTHON: "C:\\Miniconda38-x64"
         PYTHON_VERSION: "3.8"
         PYTHON_ARCH: "64"
 
@@ -83,7 +91,7 @@ build_script:
   - conda config --set auto_update_conda false
   - conda clean --all --yes
   - conda install --yes tqdm
-  - conda install --yes %BUILD_DEPENDS% conda-build
+  - conda install --yes conda-build
   - conda create --yes -n build_env python=%PYTHON_VERSION%  %BUILD_DEPENDS%
   - CALL %CONDABAT% activate build_env
   - conda update  --yes setuptools pip

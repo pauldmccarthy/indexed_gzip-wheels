@@ -23,7 +23,7 @@ function build_source {
   REPO_DIR=$1
   pip install --upgrade pip setuptools
   pushd $REPO_DIR > /dev/null;
-  pip install cython numpy;
+  pip install cython numpy nibabel;
   python setup.py sdist;
   cp dist/*tar.gz "$TRAVIS_BUILD_DIR"/wheelhouse/;
   popd > /dev/null;
