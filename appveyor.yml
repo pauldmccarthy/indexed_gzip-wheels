@@ -76,6 +76,7 @@ install:
 build_script:
 
   # install build dependencies
+  - conda update --yes conda
   - conda config --set auto_update_conda false
   - conda install --yes tqdm
   - conda clean --all --yes
