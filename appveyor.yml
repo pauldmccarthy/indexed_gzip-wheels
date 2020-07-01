@@ -55,9 +55,9 @@ environment:
       #   PYTHON: "C:\\Miniconda37"
       #   PYTHON_VERSION: "3.8"
       #   PYTHON_ARCH: "32"
-      - PYTHON: "C:\\Miniconda38-x64"
-        PYTHON_VERSION: "3.8"
-        PYTHON_ARCH: "64"
+      # - PYTHON: "C:\\Miniconda38-x64"
+      #   PYTHON_VERSION: "3.8"
+      #   PYTHON_ARCH: "64"
 
 
 install:
@@ -77,6 +77,7 @@ build_script:
 
   # install build dependencies
   - conda config --set auto_update_conda false
+  - conda install --yes tqdm
   - conda clean --all --yes
   - conda install --yes conda-build
   - conda create --yes -n build_env python=%PYTHON_VERSION%  %BUILD_DEPENDS%
