@@ -15,27 +15,27 @@ env:
         # Change this whenever you need to do a new build
         - BUILD_COMMIT=v1.3.2
         # Set to 0 for a test build, 1 to deploy builds
-        - DEPLOY=1
+        - DEPLOY=0
         - BUILD_DEPENDS="Cython numpy"
         - TEST_DEPENDS="numpy nibabel pytest coverage pytest-cov six"
         - PLAT=x86_64
         - UNICODE_WIDTH=32
 
-language: python
+language: generic
 os: linux
-dist: trusty
+dist: xenial
 services: docker
 
 jobs:
-  exclude:
-    # Exclude the default Python 3.5 build
-    - python: 3.5
   include:
     - os: linux
-      env: MB_PYTHON_VERSION=2.7
+      env:
+        - MB_PYTHON_VERSION=2.7
+        - PLAT=x86_64
     - os: linux
       env:
         - MB_PYTHON_VERSION=2.7
+        - PLAT=x86_64
         - UNICODE_WIDTH=16
     - os: linux
       env:
@@ -48,54 +48,100 @@ jobs:
         - UNICODE_WIDTH=16
     - os: linux
       env:
-        - MB_PYTHON_VERSION=3.5
+        - MB_PYTHON_VERSION=2.7
+        - MB_ML_VER=2014
+        - PLAT=aarch64
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=2.7
+        - MB_ML_VER=2014
+        - PLAT=aarch64
+        - UNICODE_WIDTH=16
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.5
+        - PLAT=x86_64
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.5
         - PLAT=i686
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.5
+        - MB_ML_VER=2014
+        - PLAT=aarch64
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.6
+        - PLAT=x86_64
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.6
         - PLAT=i686
+   - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.6
+        - MB_ML_VER=2014
+        - PLAT=aarch64
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.7
+        - PLAT=x86_64
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.7
         - PLAT=i686
+   - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.7
+        - MB_ML_VER=2014
+        - PLAT=aarch64
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.8
+        - PLAT=x86_64
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.8
         - PLAT=i686
+   - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.8
+        - MB_ML_VER=2014
+        - PLAT=aarch64
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.9
+        - PLAT=x86_64
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.9
+        - PLAT=i686
+   - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.9
+        - MB_ML_VER=2014
+        - PLAT=aarch64
+
     - os: osx
-      language: generic
       env:
         - MB_PYTHON_VERSION=2.7
     - os: osx
-      language: generic
       env:
         - MB_PYTHON_VERSION=3.5
     - os: osx
-      language: generic
       env:
         - MB_PYTHON_VERSION=3.6
     - os: osx
-      language: generic
       env:
         - MB_PYTHON_VERSION=3.7
     - os: osx
-      language: generic
       env:
         - MB_PYTHON_VERSION=3.8
+    - os: osx
+      env:
+        - MB_PYTHON_VERSION=3.9
     - os: linux
-      language: generic
       env:
         - MB_PYTHON_VERSION=3.6
         - BUILD_SOURCE=1
