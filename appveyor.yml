@@ -20,7 +20,7 @@ environment:
       # Change this whenever you need to do a new build
       BUILD_COMMIT: v1.3.2
       # Set to 0 for a test build, 1 to deploy builds
-      DEPLOY: 1
+      DEPLOY: 0
       BUILD_DEPENDS: "Cython numpy zlib"
       TEST_DEPENDS: "numpy pytest six"
 
@@ -29,14 +29,14 @@ environment:
 
     matrix:
 
-      # - image: Visual Studio 2015
-      #   PYTHON: "C:\\Miniconda"
-      #   PYTHON_VERSION: "2.7"
-      #   PYTHON_ARCH: "32"
-      # - image: Visual Studio 2015
-      #   PYTHON: "C:\\Miniconda-x64"
-      #   PYTHON_VERSION: "2.7"
-      #   PYTHON_ARCH: "64"
+      - image: Visual Studio 2015
+        PYTHON: "C:\\Miniconda"
+        PYTHON_VERSION: "2.7"
+        PYTHON_ARCH: "32"
+      - image: Visual Studio 2015
+        PYTHON: "C:\\Miniconda-x64"
+        PYTHON_VERSION: "2.7"
+        PYTHON_ARCH: "64"
       - PYTHON: "C:\\Miniconda36"
         PYTHON_VERSION: "3.6"
         PYTHON_ARCH: "32"
@@ -84,7 +84,7 @@ build_script:
   - conda create --yes -n build_env python=%PYTHON_VERSION%  %BUILD_DEPENDS%
   - CALL conda.bat activate build_env
   - conda update  --yes setuptools pip
-  - conda install --yes readme_renderer cmarkgfm twine
+  - conda install --yes readme_renderer cmarkgfm twine importlib_metadata
   - set ZLIB_HOME=%PYTHON%\\Library
 
   # Build and install the wheel
