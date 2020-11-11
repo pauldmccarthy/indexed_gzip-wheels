@@ -1,6 +1,7 @@
 [submodule "multibuild"]
 	path = multibuild
 	url = https://github.com/matthew-brett/multibuild.git
+	branch = devel
 [submodule "indexed_gzip"]
 	path = indexed_gzip
 	url = https://github.com/pauldmccarthy/indexed_gzip.git
