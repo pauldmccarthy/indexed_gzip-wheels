@@ -80,7 +80,7 @@ build_script:
   - conda create --yes -n build_env python=%PYTHON_VERSION%  %BUILD_DEPENDS%
   - CALL conda.bat activate build_env
   - conda update  --yes setuptools pip
-  - conda install --yes readme_renderer cmarkgfm twine importlib_metadata
+  - conda install --yes readme_renderer cmarkgfm twine importlib_metadata keyring
   - set ZLIB_HOME=%PYTHON%\\Library
 
   # Build and install the wheel
