@@ -10,9 +10,6 @@
 #   - TWINE_PASSWORD: - Password to use when uploading to pypi
 
 
-os: Visual Studio 2019
-
-
 environment:
     global:
       REPO_DIR: indexed_gzip
@@ -29,12 +26,10 @@ environment:
 
     matrix:
 
-      - image: Visual Studio 2015
-        PYTHON: "C:\\Miniconda"
+      - PYTHON: "C:\\Miniconda"
         PYTHON_VERSION: "2.7"
         PYTHON_ARCH: "32"
-      - image: Visual Studio 2015
-        PYTHON: "C:\\Miniconda-x64"
+      - PYTHON: "C:\\Miniconda-x64"
         PYTHON_VERSION: "2.7"
         PYTHON_ARCH: "64"
       - PYTHON: "C:\\Miniconda36"
@@ -67,6 +62,7 @@ install:
 
   # Put miniconda on the path
   - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PYTHON%\Library\bin;%PATH%
+  - conda info
 
   # Check that we have the expected version and architecture for Python
   - python --version
