@@ -78,7 +78,7 @@ jobs:
       env:
         - MB_PYTHON_VERSION=3.6
         - PLAT=i686
-   - os: linux
+    - os: linux
       env:
         - MB_PYTHON_VERSION=3.6
         - MB_ML_VER=2014
@@ -91,7 +91,7 @@ jobs:
       env:
         - MB_PYTHON_VERSION=3.7
         - PLAT=i686
-   - os: linux
+    - os: linux
       env:
         - MB_PYTHON_VERSION=3.7
         - MB_ML_VER=2014
@@ -104,7 +104,7 @@ jobs:
       env:
         - MB_PYTHON_VERSION=3.8
         - PLAT=i686
-   - os: linux
+    - os: linux
       env:
         - MB_PYTHON_VERSION=3.8
         - MB_ML_VER=2014
@@ -117,7 +117,7 @@ jobs:
       env:
         - MB_PYTHON_VERSION=3.9
         - PLAT=i686
-   - os: linux
+    - os: linux
       env:
         - MB_PYTHON_VERSION=3.9
         - MB_ML_VER=2014
