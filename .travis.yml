@@ -22,102 +22,83 @@ env:
         - UNICODE_WIDTH=32
 
 language: generic
-os: linux
-dist: xenial
 services: docker
+os:       linux
+dist:     bionic
+arch:     x86_64
 
 jobs:
   include:
-    - os: linux
-      env:
+    - env:
         - MB_PYTHON_VERSION=2.7
         - PLAT=x86_64
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=2.7
-        - PLAT=x86_64
-        - UNICODE_WIDTH=16
-    - os: linux
-      env:
+    - env:
         - MB_PYTHON_VERSION=2.7
         - PLAT=i686
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=2.7
-        - PLAT=i686
-        - UNICODE_WIDTH=16
-    - os: linux
+    - arch: arm64
       env:
         - MB_PYTHON_VERSION=2.7
         - MB_ML_VER=2014
         - PLAT=aarch64
-    - os: linux
+
+    - env:
+        - MB_PYTHON_VERSION=2.7
+        - PLAT=x86_64
+        - UNICODE_WIDTH=16
+    - env:
+        - MB_PYTHON_VERSION=2.7
+        - PLAT=i686
+        - UNICODE_WIDTH=16
+    - arch: arm64
       env:
         - MB_PYTHON_VERSION=2.7
         - MB_ML_VER=2014
         - PLAT=aarch64
         - UNICODE_WIDTH=16
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.5
-        - PLAT=x86_64
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.5
-        - PLAT=i686
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.5
-        - MB_ML_VER=2014
-        - PLAT=aarch64
-    - os: linux
-      env:
+
+    - env:
         - MB_PYTHON_VERSION=3.6
         - PLAT=x86_64
-    - os: linux
-      env:
+    - env:
         - MB_PYTHON_VERSION=3.6
         - PLAT=i686
-    - os: linux
+    - arch: arm64
       env:
         - MB_PYTHON_VERSION=3.6
         - MB_ML_VER=2014
         - PLAT=aarch64
-    - os: linux
-      env:
+
+    - env:
         - MB_PYTHON_VERSION=3.7
         - PLAT=x86_64
-    - os: linux
-      env:
+    - env:
         - MB_PYTHON_VERSION=3.7
         - PLAT=i686
-    - os: linux
+    - arch: arm64
       env:
         - MB_PYTHON_VERSION=3.7
         - MB_ML_VER=2014
         - PLAT=aarch64
-    - os: linux
-      env:
+
+    - env:
         - MB_PYTHON_VERSION=3.8
         - PLAT=x86_64
-    - os: linux
-      env:
+    - env:
         - MB_PYTHON_VERSION=3.8
         - PLAT=i686
-    - os: linux
+    - arch: arm64
       env:
         - MB_PYTHON_VERSION=3.8
         - MB_ML_VER=2014
         - PLAT=aarch64
-    - os: linux
-      env:
+
+    - env:
         - MB_PYTHON_VERSION=3.9
         - PLAT=x86_64
-    - os: linux
-      env:
+    - env:
         - MB_PYTHON_VERSION=3.9
         - PLAT=i686
-    - os: linux
+    - arch: arm64
       env:
         - MB_PYTHON_VERSION=3.9
         - MB_ML_VER=2014
@@ -128,9 +109,6 @@ jobs:
         - MB_PYTHON_VERSION=2.7
     - os: osx
       env:
-        - MB_PYTHON_VERSION=3.5
-    - os: osx
-      env:
         - MB_PYTHON_VERSION=3.6
     - os: osx
       env:
@@ -143,7 +121,7 @@ jobs:
         - MB_PYTHON_VERSION=3.9
     - os: linux
       env:
-        - MB_PYTHON_VERSION=3.6
+        - MB_PYTHON_VERSION=3.7
         - BUILD_SOURCE=1
 
 
