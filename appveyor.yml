@@ -78,14 +78,14 @@ install:
 build_script:
 
   # install build dependencies
-  - conda update --yes conda
+  - conda update --yes -c conda-forge conda
   - conda config --set auto_update_conda false
-  - conda install --yes tqdm
+  - conda install --yes -c conda-forge tqdm
   - conda clean --all --yes
-  - conda install --yes conda-build
-  - conda create --yes -n build_env python=%PYTHON_VERSION%  %BUILD_DEPENDS%
+  - conda install --yes -c conda-forge conda-build
+  - conda create --yes -n build_env -c conda-forge python=%PYTHON_VERSION%  %BUILD_DEPENDS%
   - CALL conda.bat activate build_env
-  - conda update  --yes setuptools pip
+  - conda update  --yes -c conda-forge setuptools pip
   - conda install --yes -c conda-forge readme_renderer cmarkgfm twine
   - set ZLIB_HOME=%PYTHON%\\Library
 
