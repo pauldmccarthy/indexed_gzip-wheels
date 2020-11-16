@@ -15,7 +15,7 @@ env:
         # Change this whenever you need to do a new build
         - BUILD_COMMIT=v1.3.3
         # Set to 0 for a test build, 1 to deploy builds
-        - DEPLOY=0
+        - DEPLOY=1
         - BUILD_DEPENDS="Cython numpy"
         - TEST_DEPENDS="numpy nibabel pytest coverage pytest-cov six"
         - PLAT=x86_64
@@ -49,13 +49,6 @@ jobs:
     - env:
         - MB_PYTHON_VERSION=2.7
         - PLAT=i686
-        - UNICODE_WIDTH=16
-    - arch: arm64
-      env:
-        - MB_PYTHON_VERSION=2.7
-        - MB_ML_VER=2014
-        - PLAT=aarch64
-        - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
         - UNICODE_WIDTH=16
 
     - env:
